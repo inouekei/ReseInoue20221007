@@ -3,15 +3,16 @@
     Login
 @endsection
 @section('disp-main')
-    <form class='form-auth'>
+    <form class='form-auth' action='/login' method='post'>
+        @csrf
         <table class='table-auth'>
             <tr>
                 <td><i class="fa-solid fa-envelope"></i></td>
-                <td><input class='input-auth' name='Email' placeholder='Email'></td>
+                <td><input class='input-auth' name='email' placeholder='Email'></td>
             </tr>
             <tr>
                 <td><i class="fa-solid fa-lock"></i></td>
-                <td><input class='input-auth' name='password' placeholder='Password'></td>
+                <td><input class='input-auth' name='password' type='password' placeholder='Password'></td>
             </tr>
             <tr>
                 <td></td>

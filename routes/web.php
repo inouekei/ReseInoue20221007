@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\MyPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,24 +17,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/register', function () {
-    return view('register');
+Route::middleware(['auth'])->group(function(){
+        Route::get('/', [RestaurantController::class, 'index']);
+        Route::get('/detail/{id}', [RestaurantController::class, 'show']);
+        Route::post('/reservation/confirm', [ReservationController::class, 'confirm']);
+        Route::post('/reservation/create', [ReservationController::class, 'create']);
+        Route::post('/reservation/{id}/remove', [ReservationController::class, 'remove']);
+        Route::post('/favorite/create', [FavoriteController::class, 'create']);
+        Route::post('/favorite/{id}/remove', [FavoriteController::class, 'remove']);
+        Route::get('/mypage', [MyPageController::class, 'index']);
 });
-Route::get('/thanks', function () {
-    return view('thanks');
-});
-Route::get('/login', function () {
-    return view('login');
-});
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('/detail/{restaurant_id}', function () {
-    return view('detail');
-});
-Route::get('done', function () {
-    return view('done');
-});
-Route::get('mypage', function () {
-    return view('customer-mypage');
-});
+
+
+require __DIR__.'/auth.php';

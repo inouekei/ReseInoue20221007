@@ -31,6 +31,7 @@
       font-size: 10pt;
       text-decoration: none;
       color: white;
+      cursor: pointer;
     }
     .input-main{
       height: 30px;
@@ -119,11 +120,14 @@
     .menu-link {
       display: block;
       width: 100%;
+      padding: 9px 15px 10px 0;
+      background: none;
+      border: none;
       font-size: 15px;
       box-sizing: border-box;
       color: darkblue;
       text-decoration: none;
-      padding: 9px 15px 10px 0;
+      cursor: pointer;
     }
     #menu-btn-check:checked ~ .menu-content {
       right: 0;
@@ -183,12 +187,9 @@
         width: 40%;
         margin-bottom: 60px;
     }
-    .div-restaurant-card-img{
-        height: 150px;
+    .img-restaurant-card{
+        width: 100%;
         border-radius: 5px 5px 0 0;
-        background-image: url('https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/sushi.jpg');
-        background-size: cover;
-        background-position: center;
     }
     .div-restaurant-card-content{
         position: relative;
@@ -202,16 +203,24 @@
     }
     .btn-restaurant-card{
         display: block;
-        width: 75px;
+        width: 120px;
+        height: 30px;
         margin: 10px 0;
         text-align: center;
     }
     .div-heart{
         position: absolute;
-        right: 10px;
-        bottom: 10px;
+        right: 20px;
+        bottom: 25px;
+        padding: 0;
+        border: none;
+        background: none;
         font-size: 20pt;
         color: gray;
+        cursor: pointer;
+    }
+    .div-heart-red{
+      color: red;
     }
     /* restaurant-card */
     </style>

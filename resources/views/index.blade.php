@@ -20,95 +20,80 @@
 
 </style>
 @section('header-item')
-    <form class='form-index'>
+    <form class='form-index' action='/' method='get'>
+        @csrf
         <select class='select-index' name='area'>
             <option value='All area' selected>All area</option>
-            <option value='東京'>東京</option>
-            <option value='大阪'>大阪</option>
-            <option value='名古屋'>名古屋</option>
+            @foreach (config('const.AREAS') as $area)
+            <option value={{$area}}
+                @if($request->area && $request->area === $area)
+                selected
+                @endif
+            >
+                {{$area}}
+            </option>
+            @endforeach
         </select>
         <select class='select-index' name='genre'>
             <option value='All genre' selected>All genre</option>
-            <option value='寿司'>寿司</option>
-            <option value='焼肉'>焼肉</option>
-            <option value='イタリアン'>イタリアン</option>
+            @foreach (config('const.GENRES') as $genre)
+            <option value={{$genre}}
+                @if($request->genre && $request->genre === $genre)
+                selected
+                @endif
+            >
+                {{$genre}}
+            </option>
+            @endforeach
         </select>
-        <input class='input-index' name='name' placeholder='Search ...'>
+        <input class='input-index' name='name' @if($request->name) value = {{$request->name}} @endif placeholder='Search ...'>
     </form>
 @endsection
 @section('content')
 <div class='content-main'>
+    @if($message)
+    <span>{{$message}}<span>
+    @endif
+    @foreach ($restaurants as $restaurant)
     <div class='div-restaurant-card'>
-        <div class='div-restaurant-card-img'></div>
+        <img class='img-restaurant-card' src={{$restaurant->image_path}}></img>
         <div class='div-restaurant-card-content'>
-            <p class='p-restaurant-name'>仙人</p>
-            <small class='small-tags'>#東京都#寿司</small>
-            <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-            <i class="fa-solid fa-heart div-heart"></i>
+            <p class='p-restaurant-name'>{{$restaurant->name}}</p>
+            <small class='small-tags'>#{{$restaurant->area}}#{{$restaurant->genre}}</small>
+            <form action={{'/detail/' . $restaurant->id}} method='get'>
+                @csrf
+                <input type='hidden' name='redirect' value='/'>
+                @if($request->_token ?? false)
+                <input type='hidden' name='search-token' value={{$request->_token}}>
+                @endif
+                @if($request->area ?? false)
+                <input type='hidden' name='searchArea' value={{$request->area}}>
+                @endif
+                @if($request->genre ?? false)
+                <input type='hidden' name='searchGenre' value={{$request->genre}}>
+                @endif
+                @if($request->name ?? false)
+                <input type='hidden' name='searchName' value={{$request->name}}>
+                @endif
+                <button class='btn-main btn-restaurant-card' submit>詳しくみる</button>
+            </form>
+
+            @if($restaurant->myFavorite() ?? false)
+            <form action={{'/favorite/' . $restaurant->myFavorite()->id . '/remove'}} method='post'>
+                @csrf
+                <input type='hidden' name='redirect' value='/'>
+                <input type='hidden' name='redirect' value='/'>
+                <button class='div-heart div-heart-red'><i class="fa-solid fa-heart"></i></button>
+            </form>
+            @else
+            <form action='/favorite/create' method='post'>
+            @csrf
+                <input type='hidden' name='restaurant_id' value={{$restaurant->id}}>
+                <button class='div-heart'><i class="fa-solid fa-heart"></i></button>
+                @endif
+            </form>
         </div>
     </div>
-    <div class='div-restaurant-card'>
-        <div class='div-restaurant-card-img'></div>
-        <div class='div-restaurant-card-content'>
-            <p class='p-restaurant-name'>仙人</p>
-            <small class='small-tags'>#東京都#寿司</small>
-            <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-            <i class="fa-solid fa-heart div-heart"></i>
-        </div>
-    </div>
-    <div class='div-restaurant-card'>
-        <div class='div-restaurant-card-img'></div>
-        <div class='div-restaurant-card-content'>
-            <p class='p-restaurant-name'>仙人</p>
-            <small class='small-tags'>#東京都#寿司</small>
-            <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-            <i class="fa-solid fa-heart div-heart"></i>
-        </div>
-    </div>
-    <div class='div-restaurant-card'>
-        <div class='div-restaurant-card-img'></div>
-        <div class='div-restaurant-card-content'>
-            <p class='p-restaurant-name'>仙人</p>
-            <small class='small-tags'>#東京都#寿司</small>
-            <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-            <i class="fa-solid fa-heart div-heart"></i>
-        </div>
-    </div>
-    <div class='div-restaurant-card'>
-        <div class='div-restaurant-card-img'></div>
-        <div class='div-restaurant-card-content'>
-            <p class='p-restaurant-name'>仙人</p>
-            <small class='small-tags'>#東京都#寿司</small>
-            <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-            <i class="fa-solid fa-heart div-heart"></i>
-        </div>
-    </div>
-    <div class='div-restaurant-card'>
-        <div class='div-restaurant-card-img'></div>
-        <div class='div-restaurant-card-content'>
-            <p class='p-restaurant-name'>仙人</p>
-            <small class='small-tags'>#東京都#寿司</small>
-            <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-            <i class="fa-solid fa-heart div-heart"></i>
-        </div>
-    </div>
-    <div class='div-restaurant-card'>
-        <div class='div-restaurant-card-img'></div>
-        <div class='div-restaurant-card-content'>
-            <p class='p-restaurant-name'>仙人</p>
-            <small class='small-tags'>#東京都#寿司</small>
-            <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-            <i class="fa-solid fa-heart div-heart"></i>
-        </div>
-    </div>
-    <div class='div-restaurant-card'>
-        <div class='div-restaurant-card-img'></div>
-        <div class='div-restaurant-card-content'>
-            <p class='p-restaurant-name'>仙人</p>
-            <small class='small-tags'>#東京都#寿司</small>
-            <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-            <i class="fa-solid fa-heart div-heart"></i>
-        </div>
-    </div>
+    @endforeach
 </div>
 @endsection

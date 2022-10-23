@@ -18,7 +18,7 @@
     
 </style>
 @section('content')
-<p class='page-ttl'>testさん</p>
+<p class='page-ttl'>@yield('customer-name')さん</p>
 <div class='content-main'>
     <div class='div-half'>
         <p class='p-ttl'>@yield('info-top-ttl')</p>

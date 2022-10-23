@@ -4,22 +4,25 @@
     .reserve-card{
         position: relative;
         width: 300px;
+        margin-bottom: 30px;
         padding: 20px;
         border-radius: 5px;
         box-shadow: 3px 3px 3px 0 gray; 
         background: darkblue;
         color: white;
     }
-    .div-cancel{
+    .btn-cancel{
         position: absolute;
         top: 15px;
         right: 15px;
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
         padding: 0;
         border: solid white 2px;
         border-radius: 20px;
+        background: none;
         text-align: center;
+        font-size: 20pt;
         line-height: 20px;
         color: white;
         cursor: pointer;
@@ -38,84 +41,99 @@
     }
 </style>
 
+@section('customer-name', $customerName)
 @section('info-top-ttl', '予約状況')
 @section('info-top')
+@if(sizeof($nextReservations) === 0)
+<span>ご予約はありません。</span>
+@else
+@foreach($nextReservations as $reservation)
 <div class="reserve-card">
-    <div class="div-cancel">×</div>
+    <form action={{'/reservation/' . $reservation->id . '/remove'}} method='post'>
+        @csrf
+        <button class="btn-cancel" submit>×</button>
+    </form>
     <i class="fa-solid fa-clock"></i>
-    <span>予約1</span>
+    <span>{{'予約' . $reservation->numbering}}</span>
     <table class='tbl-reserve'>
         <tr>
             <td class='td-reserve'>Shop</td>
-            <td>仙人</td>
+            <td>{{$reservation->restaurant->name}}</td>
         </tr>
         <tr>
             <td class='td-reserve'>Date</td>
-            <td>2021-04-01</td>
+            <td>{{$reservation->resDate()}}</td>
         </tr>
         <tr>
             <td class='td-reserve'>Time</td>
-            <td>17:00</td>
+            <td>{{$reservation->resTime()}}</td>
         </tr>
         <tr>
             <td class='td-reserve'>Number</td>
-            <td>1人</td>
+            <td>{{$reservation->num_of_seats . '人'}}</td>
         </tr>
     </table>
 </div>
+@endforeach
+@endif
 @endsection
 @section('info-bottom-ttl', '過去のご来店')
 @section('info-bottom')
+@if(sizeof($pastReservations) === 0)
+<span>過去のご来店はありません。</span>
+@else
+@foreach($pastReservations as $reservation)
 <div class="reserve-card">
     <i class="fa-solid fa-clock"></i>
-    <span>予約1</span>
+    <span>{{'来店' . $reservation->numbering}}</span>
     <table class='tbl-reserve'>
         <tr>
             <td class='td-reserve'>Shop</td>
-            <td>仙人</td>
+            <td>{{$reservation->restaurant->name}}</td>
         </tr>
         <tr>
             <td class='td-reserve'>Date</td>
-            <td>2021-04-01</td>
+            <td>{{$reservation->resDate()}}</td>
         </tr>
         <tr>
             <td class='td-reserve'>Time</td>
-            <td>17:00</td>
+            <td>{{$reservation->resTime()}}</td>
         </tr>
         <tr>
             <td class='td-reserve'>Number</td>
-            <td>1人</td>
+            <td>{{$reservation->num_of_seats . '人'}}</td>
         </tr>
     </table>
 </div>
+@endforeach
+@endif
 @endsection
 @section('div-right-ttl', 'お気に入り店舗')
 @section('div-right-content')
+@if(sizeof($favorites) === 0)
+<span>お気に入りはありません。</span>
+@else
+@foreach($favorites as $favorite)
 <div class='div-restaurant-card div-restaurant-card-mypage'>
-    <div class='div-restaurant-card-img'></div>
+    <img class='img-restaurant-card' src={{$favorite->restaurant->image_path}}></img>
     <div class='div-restaurant-card-content'>
-        <p class='p-restaurant-name'>仙人</p>
-        <small class='small-tags'>#東京都#寿司</small>
-        <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-        <div class='div-heart'>♥</div>
+        <p class='p-restaurant-name'>{{$favorite->restaurant->name}}</p>
+        <small class='small-tags'>
+            {{'#' . $favorite->restaurant->area .
+                '#' . $favorite->restaurant->genre}}
+        </small>
+        <form action={{'/detail/' . $favorite->restaurant->id}} method='get'>
+            @csrf
+            <input type='hidden' name='redirect' value='/mypage'>
+            <button class='btn-main btn-restaurant-card' submit>詳しくみる</button>
+        </form>
+        <form action={{'/favorite/' . $favorite->id . '/remove'}} method='post'>
+            @csrf
+            <input type='hidden' name='redirect' value='/mypage'>
+            <button class='div-heart div-heart-red'><i class="fa-solid fa-heart"></i></button>
+        </form>
     </div>
 </div>
-<div class='div-restaurant-card div-restaurant-card-mypage'>
-    <div class='div-restaurant-card-img'></div>
-    <div class='div-restaurant-card-content'>
-        <p class='p-restaurant-name'>仙人</p>
-        <small class='small-tags'>#東京都#寿司</small>
-        <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-        <div class='div-heart'>♥</div>
-    </div>
-</div>
-<div class='div-restaurant-card div-restaurant-card-mypage'>
-    <div class='div-restaurant-card-img'></div>
-    <div class='div-restaurant-card-content'>
-        <p class='p-restaurant-name'>仙人</p>
-        <small class='small-tags'>#東京都#寿司</small>
-        <a class='btn-main btn-restaurant-card' href='/detail/1'>詳しくみる</a>
-        <div class='div-heart'>♥</div>
-    </div>
-</div>
+@endforeach
+@endif
 @endsection

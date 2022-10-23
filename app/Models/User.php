@@ -8,6 +8,30 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Userモデルクラス
+ * 
+ * ユーザー（利用者、店舗代表者、管理者）を管理
+ * 
+ * @var protected String name
+ * ユーザー名
+ * 
+ * @var proteccted String email
+ * メールアドレス
+ * 
+ * @var protected String password
+ * パスワード
+ * 
+ * @var protected String remember_token
+ * ログイントークン
+ * 
+ * @var protected String email_verified_at
+ * メールアドレス確認日時
+ * 
+ * @関数 public function customer()
+ * ユーザーに紐づく利用客レコードを出力
+ * 
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -41,4 +65,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * customer()
+     * 
+     * ユーザーに紐づく利用客レコードを出力
+     * 
+     * @var Customer $customer
+     * ユーザーに紐づく利用客レコード
+     * 
+     * @return Customer $customer
+     * ユーザーに紐づく利用客レコード
+     */
+    public function customer(){
+        $customer = $this->hasOne('App\Models\Customer')->first();
+        return $customer;        
+    }
 }

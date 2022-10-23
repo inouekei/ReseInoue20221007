@@ -55,13 +55,14 @@
 @section('content')
 <div class='content-main'>
     <div class='div-info'>
-        <a href='/'><span class="span-back"><</span></a>
+        <a href=@yield('back-page')><span class="span-back"><</span></a>
         <p class='p-name'>@yield('restaurant-name')</p>
         <div class='div-img'></div>
         <p class='p-tags'>@yield('restaurant-tags')</p>
         <p class='p-disc'>@yield('restaurant-disc')</p>
     </div>
-        <form class='form-right'>
+        <form class='form-right' action=@yield('form-action') method='post'>
+            @csrf
             <div class="div-form-content">
             <div class='div-form-ttl'>@yield('form-ttl')</div>
                 @yield('content-form')
