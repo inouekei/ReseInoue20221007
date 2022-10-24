@@ -51,6 +51,7 @@ class ReservationController extends Controller
      *             'resDate' => $request->resDate,
      *             'resTime' => $request->resTime,
      *             'num_of_seats' => $request->num_of_seats,
+     *             'backPage' => $request->redirect,
      *         ]);
      */
     public function confirm(Request $request)
@@ -62,6 +63,7 @@ class ReservationController extends Controller
             'resDate' => $request->resDate,
             'resTime' => $request->resTime,
             'num_of_seats' => $request->num_of_seats,
+            'backPage' => $request->redirect,
         ]);
     }
 
@@ -79,8 +81,9 @@ class ReservationController extends Controller
      * @var Array $reservation
      * テーブルに代入する値の配列
      * 
-     * @return view('done');
-     * 
+     * @return view('done', [
+     *             'backPage' => $request->redirect,
+     *         ]);
      */
     public function create(Request $request)
     {
@@ -92,7 +95,9 @@ class ReservationController extends Controller
             'num_of_seats'=> $request->num_of_seats
         ];
         Reservation::create($reservation);
-        return view('done');
+        return view('done', [
+            'backPage' => $request->redirect,
+        ]);
     }
 
     /**

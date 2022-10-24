@@ -63,17 +63,14 @@
             <form action={{'/detail/' . $restaurant->id}} method='get'>
                 @csrf
                 <input type='hidden' name='redirect' value='/'>
-                @if($request->_token ?? false)
-                <input type='hidden' name='search-token' value={{$request->_token}}>
-                @endif
                 @if($request->area ?? false)
-                <input type='hidden' name='searchArea' value={{$request->area}}>
+                <input type='hidden' name='searchArea' value={{urlencode($request->area)}}>
                 @endif
                 @if($request->genre ?? false)
-                <input type='hidden' name='searchGenre' value={{$request->genre}}>
+                <input type='hidden' name='searchGenre' value={{urlencode($request->genre)}}>
                 @endif
                 @if($request->name ?? false)
-                <input type='hidden' name='searchName' value={{$request->name}}>
+                <input type='hidden' name='searchName' value={{urlencode($request->name)}}>
                 @endif
                 <button class='btn-main btn-restaurant-card' submit>詳しくみる</button>
             </form>
@@ -82,13 +79,31 @@
             <form action={{'/favorite/' . $restaurant->myFavorite()->id . '/remove'}} method='post'>
                 @csrf
                 <input type='hidden' name='redirect' value='/'>
-                <input type='hidden' name='redirect' value='/'>
+                @if($request->area ?? false)
+                <input type='hidden' name='searchArea' value={{urlencode($request->area)}}>
+                @endif
+                @if($request->genre ?? false)
+                <input type='hidden' name='searchGenre' value={{urlencode($request->genre)}}>
+                @endif
+                @if($request->name ?? false)
+                <input type='hidden' name='searchName' value={{urlencode($request->name)}}>
+                @endif
                 <button class='div-heart div-heart-red'><i class="fa-solid fa-heart"></i></button>
             </form>
             @else
             <form action='/favorite/create' method='post'>
             @csrf
                 <input type='hidden' name='restaurant_id' value={{$restaurant->id}}>
+                <input type='hidden' name='redirect' value='/'>
+                @if($request->area ?? false)
+                <input type='hidden' name='searchArea' value={{urlencode($request->area)}}>
+                @endif
+                @if($request->genre ?? false)
+                <input type='hidden' name='searchGenre' value={{urlencode($request->genre)}}>
+                @endif
+                @if($request->name ?? false)
+                <input type='hidden' name='searchName' value={{urlencode($request->name)}}>
+                @endif
                 <button class='div-heart'><i class="fa-solid fa-heart"></i></button>
                 @endif
             </form>

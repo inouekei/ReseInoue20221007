@@ -38,7 +38,11 @@ class FavoriteController extends Controller
      * @var Array $favorites
      * テーブルに代入する値がすでに登録されている場合の該当レコード
      * 
-     * @return redirect('/');
+     * @var Restaurant $redirect
+     * 戻り先のページリンク
+     * 店舗一覧から移動した場合は検索状況も保持する
+     * 
+     * @return redirect($redirect);
      * 
      */
     public function create(Request $request)
@@ -55,7 +59,15 @@ class FavoriteController extends Controller
         if(sizeof($favorites) === 0){
             Favorite::create($favorite);
         } 
-        return redirect('/');
+
+        $redirect = $request->redirect
+        . ((($request->searchArea)||($request->searchGenre)||($request->searchName))
+            ? '?' : '') 
+        . ($request->searchArea ? ('&area=' . $request->searchArea) : '') 
+        . ($request->searchGenre ? ('&genre=' . $request->searchGenre) : '') 
+        . ($request->searchName ? ('&name=' . $request->searchName) : '');
+
+        return redirect($redirect);
     }
 
     /**
@@ -76,7 +88,12 @@ class FavoriteController extends Controller
      * 削除予定のお気に入り
      * ログイン中利用者のものでない場合は空
      * 
-     * @return redirect('/');
+     * @var Restaurant $redirect
+     * 戻り先のページリンク
+     * 店舗一覧から移動した場合は検索状況も保持する
+     * 
+     * @return redirect($request->redirect);
+     * @return redirect($redirect);
      * 
      */
     public function remove(Request $request, $id)
@@ -86,6 +103,14 @@ class FavoriteController extends Controller
                         ->where('customer_id', $customerId)->get();
         if(sizeof($favorite) === 0) return redirect($request->redirect);
         $favorite[0]->delete();
-        return redirect($request->redirect);
+
+        $redirect = $request->redirect
+        . ((($request->searchArea)||($request->searchGenre)||($request->searchName))
+            ? '?' : '') 
+        . ($request->searchArea ? ('&area=' . $request->searchArea) : '') 
+        . ($request->searchGenre ? ('&genre=' . $request->searchGenre) : '') 
+        . ($request->searchName ? ('&name=' . $request->searchName) : '');
+
+        return redirect($redirect);
     }        
 }

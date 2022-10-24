@@ -17,7 +17,7 @@ class CustomerSeeder extends Seeder
      */
     public function run()
     {
-        $userLastId = User::all()->last()->id;
+        $userLastId = User::all()->last()->id ?? 0; 
         for ($i = $userLastId + 1; $i < $userLastId + 5; $i++){
             $user = [
                 'name' => 'customer' . $i,

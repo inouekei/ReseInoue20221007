@@ -1,25 +1,22 @@
 @extends('layouts.restaurant-info')
 
 <style>
-.div-confirm{
-    margin-top: 20px;
-}
 .mode-confirm{
     padding: 10px;
     background: blue;
     color: blue;
 }
 .mode-create{
-    padding: 10px 100px 10px 10px;
-    border-radius: 5px;
-    background: royalblue;
+    padding: 10px 50px 10px 10px;
     color: white;
 }
 
-.tbl-confirm{
-}
 .td-confirm{
     padding-right: 30px;
+}
+
+.btn-modify{
+    margin: 10px;
 }
 </style>
 
@@ -30,60 +27,47 @@
 
 @section('form-ttl', '予約')
 @section('back-page', $backPage)
-@section('form-action', '/reservation/' . $formAction)
+@section('form-main-action', '/reservation/' . $formAction)
 
-@section('content-form')
-    <input class='input-main' type="date" name="resDate" value={{$resDate ?? ''}}>
-    <select class='input-main input-full' name="resTime">
+@section('content-form-main')
+    <input type='hidden' name='redirect' value={{$backPage}}>
+    <input class='input-main' type="date" name="resDate"
+        value={{$resDate ?? ''}}
+        {{($formAction === 'create') ? 'readonly' : ''}}
+    >
+
+    <select class='input-main input-full' name="resTime"
+        {{($formAction === 'create') ? 'disabled' : ''}}
+    >
         @foreach (config('const.AVAILABLE_HOURS') as $hour)
         <option value={{$hour}}
-            @if(($resTime ?? false) && $resTime === $hour)
-            selected
-            @endif
+            {{(($resTime ?? false) && $resTime === $hour) ? 'selected' : ''}}        
         >
             {{$hour}}
         </option>
         @endforeach
     </select>
-    <select class='input-main input-full' name="num_of_seats">
+    @if($formAction === 'create')
+    <input type='hidden' name='resTime' value={{$resTime}}>
+    @endif
+
+    <select class='input-main input-full' name="num_of_seats"
+        {{($formAction === 'create') ? 'disabled' : ''}}
+    >
     @foreach (config('const.AVAILABLE_SEATS') as $seats)
         <option value={{$seats}}
-            @if(($num_of_seats ?? false) && $num_of_seats == $seats)
-            selected
-            @endif
+            {{(($num_of_seats ?? false) && $num_of_seats == $seats) ? 'selected' : ''}}
         >
             {{$seats . '人'}}
         </option>
         @endforeach
     </select>
+    @if($formAction === 'create')
+    <input type='hidden' name='num_of_seats' value={{$num_of_seats}}>
+    @endif
+
     <input type="hidden" name="restaurant_id" value={{$restaurant->id}}>
 
-    <div class='div-confirm'>
-        <table class={{"mode-" . $formAction}}>
-            <tr>
-                <td class='td-confirm'>Shop</td>
-                <td>{{$restaurant->name}}</td>
-            </tr>
-            <tr>
-                <td class='td-confirm'>Date</td>
-                <td>
-                    {{$resDate ?? ''}}
-                </td>
-            </tr>
-            <tr>
-                <td class='td-confirm'>Time</td>
-                <td>
-                    {{$resTime ?? ''}}
-                </td>
-            </tr>
-            <tr>
-                <td class='td-confirm'>Number</td>
-                <td>
-                    {{($resSeats  ?? '') . '人'}}
-                </td>
-            </tr>
-        </table>
-    </div>
 @endsection
 @section('button-txt')
 @if($formAction === 'confirm')
@@ -92,3 +76,39 @@
 予約する
 @endif
 @endsection
+
+
+@if($formAction === 'create')
+@section('form-confirm-action', '/detail/' . $restaurant->id)
+@section('content-form-confirm')
+<input type='hidden' name='redirect' value={{$backPage}}>
+<table class="mode-create">
+    <tr>
+        <td class='td-confirm'>Shop</td>
+        <td>{{$restaurant->name}}</td>
+    </tr>
+    <tr>
+        <td class='td-confirm'>Date</td>
+        <td>
+            {{$resDate ?? ''}}
+        </td>
+        <input type='hidden' name='resDate' value={{$resDate ?? ''}}>
+    </tr>
+    <tr>
+        <td class='td-confirm'>Time</td>
+        <td>
+            {{$resTime ?? ''}}
+        </td>
+        <input type='hidden' name='resTime' value={{$resTime ?? ''}}>
+    </tr>
+    <tr>
+        <td class='td-confirm'>Number</td>
+        <td>
+            {{($num_of_seats  ?? '') . '人'}}
+        </td>
+        <input type='hidden' name='num_of_seats' value={{$num_of_seats ?? ''}}>
+    </tr>
+</table>
+<button submit class='btn-main btn-modify'>修正する</button>
+@endsection
+@endif

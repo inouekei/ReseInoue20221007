@@ -32,14 +32,17 @@
     .p-disc{
         margin-top: 30px;
     }
-    .form-right{
-        width: 50%;
+    .div-forms{
+        position: relative;
+    }
+    .form-main{
+        position: relative;
+        width: 300px;
         height: 100%;
         margin: 20px;
         border-radius: 5px;
         background: blue;
         box-shadow: 3px 3px 3px 0 gray; 
-
     }
     .div-form-content{
         padding: 20px;
@@ -49,6 +52,14 @@
         margin-bottom: 20px;
         font-size: 20pt;
         color: white;
+    }
+    .form-confirm{
+        position: absolute;
+        left: 20px;
+        bottom: 100px;
+        margin: 20px;
+        background: royalblue;
+        border-radius: 5px;
     }
     
 </style>
@@ -61,13 +72,19 @@
         <p class='p-tags'>@yield('restaurant-tags')</p>
         <p class='p-disc'>@yield('restaurant-disc')</p>
     </div>
-        <form class='form-right' action=@yield('form-action') method='post'>
-            @csrf
-            <div class="div-form-content">
-            <div class='div-form-ttl'>@yield('form-ttl')</div>
-                @yield('content-form')
-            </div>
-            <button class='btn-right-form' submit>@yield('button-txt')</button>
-        </form>
+        <div class="div-forms">
+            <form class='form-main' action=@yield('form-main-action') method='post'>
+                @csrf
+                <div class="div-form-content">
+                <div class='div-form-ttl'>@yield('form-ttl')</div>
+                    @yield('content-form-main')
+                </div>
+                <button class='btn-right-form' submit>@yield('button-txt')</button>
+            </form>
+            <form action=@yield('form-confirm-action') class="form-confirm">
+                @csrf
+                @yield('content-form-confirm')
+            </form>
+        </div>
 </div>
 @endsection

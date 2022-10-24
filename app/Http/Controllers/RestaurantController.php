@@ -96,6 +96,9 @@ class RestaurantController extends Controller
      *             'restaurant' => $restaurant,
      *             'formAction' => 'confirm',
      *             'backPage' => $redirect,
+     *             'resDate' => $request->resDate ?? null,
+     *             'resTime' => $request->resTime ?? null,
+     *             'num_of_seats' => $request->num_of_seats ?? null,
      *         ]);
      * 表示するRestaurant一覧をindexビューに渡す
      */
@@ -113,6 +116,9 @@ class RestaurantController extends Controller
             'restaurant' => $restaurant,
             'formAction' => 'confirm',
             'backPage' => $redirect,
+            'resDate' => $request->resDate ?? null,
+            'resTime' => $request->resTime ?? null,
+            'num_of_seats' => $request->num_of_seats ?? null,
         ]);
     }
 }
