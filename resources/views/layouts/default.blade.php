@@ -43,6 +43,11 @@
     .input-full{
       width: 100%;
     }
+    .textarea-main{
+      height: 150px;
+      margin-top: 20px;
+      padding: 10px;
+    }
     /* common*/
     /* header*/
     .header-main{
@@ -54,7 +59,7 @@
     .title-wrapper{
       display:flex;
     }
-    #menu-btn-check {
+    .check-hidden {
       display: none;
     }
     .menu-btn {
@@ -225,13 +230,21 @@
       color: red;
     }
     /* restaurant-card */
+
+    /* reserve-card */
+    .btn-reserve-card{
+        background: white;
+        color: darkblue;
+    }
+    /* reserve-card */
+
     </style>
 </head>
 <body>
   <div class="content">
     <header class='header-main'>
       <div class='title-wrapper'>
-        <input type="checkbox" id="menu-btn-check">
+        <input class='check-hidden' type="checkbox" id="menu-btn-check">
         <label for="menu-btn-check" class="menu-btn">
           <span class='bars'></span>
         </label>

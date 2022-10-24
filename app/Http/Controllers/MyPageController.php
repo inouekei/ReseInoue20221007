@@ -24,6 +24,9 @@ class MyPageController extends Controller
      * 
      * マイページ表示処理
      * 
+     * @param Request $request
+     * メッセージがある場合は格納される
+     * 
      * @var Customer $customer
      * ログイン中の利用者
      * 
@@ -37,7 +40,7 @@ class MyPageController extends Controller
      * @return redirect('/mypage');
      * 
      */
-    public function index()
+    public function index(Request $request)
     {
         $customer = Auth::user()->customer();
         $customerName = Auth::user()->name;
@@ -49,6 +52,7 @@ class MyPageController extends Controller
             'nextReservations' => $reservations[0],
             'pastReservations' => $reservations[1],
             'favorites' => $favorites,
+            'message' => $request->message ?? null,
         ]);
     }
 }

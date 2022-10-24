@@ -56,9 +56,7 @@ class FavoriteController extends Controller
             ['customer_id', '=', $customerId],
             ['restaurant_id', '=', $request->restaurant_id],
         ])->get();
-        if(sizeof($favorites) === 0){
-            Favorite::create($favorite);
-        } 
+        if(sizeof($favorites) === 0) Favorite::create($favorite);
 
         $redirect = $request->redirect
         . ((($request->searchArea)||($request->searchGenre)||($request->searchName))
@@ -88,7 +86,7 @@ class FavoriteController extends Controller
      * 削除予定のお気に入り
      * ログイン中利用者のものでない場合は空
      * 
-     * @var Restaurant $redirect
+     * @var String $redirect
      * 戻り先のページリンク
      * 店舗一覧から移動した場合は検索状況も保持する
      * 

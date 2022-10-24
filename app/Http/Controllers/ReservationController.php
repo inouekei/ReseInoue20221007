@@ -40,7 +40,7 @@ class ReservationController extends Controller
      * 作成前の内容確認表示処理
      * 
      * @param Request $request
-     * 予約内容
+     * 入力内容
      * 
      * @var Restaurant $restaurant
      * 表示するRestaurant
@@ -52,6 +52,7 @@ class ReservationController extends Controller
      *             'resTime' => $request->resTime,
      *             'num_of_seats' => $request->num_of_seats,
      *             'backPage' => $request->redirect,
+     *             'reservation_id' => $request->id,
      *         ]);
      */
     public function confirm(Request $request)
@@ -59,11 +60,12 @@ class ReservationController extends Controller
         $restaurant = Restaurant::where('id', $request->restaurant_id)->get()[0];
         return view('detail', [
             'restaurant' => $restaurant,
-            'formAction' => 'create',
+            'formAction' => $request->reservation_id ? 'update' : 'create',
             'resDate' => $request->resDate,
             'resTime' => $request->resTime,
             'num_of_seats' => $request->num_of_seats,
             'backPage' => $request->redirect,
+            'reservation_id' => $request->reservation_id ?? null,
         ]);
     }
 
@@ -105,13 +107,13 @@ class ReservationController extends Controller
      * 
      * 削除処理
      * 
-     * @param String $id
+     * @param Integer $id
      * 削除するReservationレコードのID
      * 
      * @var Integer $customerId
      * ログイン中の利用者の利用者ID
      * 
-     * @var Array $reservation
+     * @var Reservation[] $reservation
      * 削除予定の予約
      * ログイン中利用者のものでない場合は空
      * 
@@ -127,4 +129,92 @@ class ReservationController extends Controller
         $reservation[0]->delete();
         return redirect('/mypage');
     }        
+
+    /**
+     * edit()
+     * 
+     * 更新ページ表示
+     * 
+     * @param Request $request
+     * 入力内容
+     * 
+     * @param Integer $id
+     * 更新するReservationレコードのID
+     * 
+     * @var Integer $customerId
+     * ログイン中の利用者の利用者ID
+     * 
+     * @var Reservation[] $reservation
+     * 更新予定の予約
+     * ログイン中利用者のものでない場合は空
+     * 
+     * @var Restaurant $restaurant
+     * 表示するRestaurant
+     * 
+     * @return view('detail', [
+     *             'restaurant' => $reservation[0]->restaurant()->first(),
+     *             'formAction' => 'edit',
+     *             'resDate' => $request->resDate ?? $reservation[0]->resDate(),
+     *             'resTime' => $request->resTime ?? $reservation[0]->resTime(),
+     *             'num_of_seats' => $request->num_of_seats ?? $reservation[0]->num_of_seats,
+     *             'backPage' => '/mypage',
+     *         ]);
+     */
+    public function edit(Request $request, $id)
+    {
+        $customerId = Auth::user()->customer()->id;
+        $reservation = Reservation::where('id', $id)
+                        ->where('customer_id', $customerId)->get();
+        if(sizeof($reservation) === 0) return redirect('/mypage');
+        return view('detail', [
+            'restaurant' => $reservation[0]->restaurant()->first(),
+            'formAction' => 'edit',
+            'resDate' => $request->resDate ?? $reservation[0]->resDate(),
+            'resTime' => $request->resTime ?? $reservation[0]->resTime(),
+            'num_of_seats' => $request->num_of_seats ?? $reservation[0]->num_of_seats,
+            'backPage' => '/mypage',
+            'reservation_id' => $id,
+        ]);
+    }
+
+    /**
+     * create()
+     * 
+     * 作成処理
+     * 
+     * @param Request $request
+     * 入力内容
+     * 
+     * @param Integer $id
+     * 更新するReservationレコードのID
+     * 
+     * @var Integer $customerId
+     * ログイン中の利用者の利用者ID
+     * 
+     * @var Reservation[] $reservation
+     * 更新予定の予約
+     * ログイン中利用者のものでない場合は空
+     * 
+     * @return view('done', [
+     *             'backPage' => 'mypage',
+     *         ]);
+     */
+    public function update(Request $request, $id)
+    {
+        $customerId = Auth::user()->customer()->id;
+        $reservation = Reservation::where('id', $id)
+                        ->where('customer_id', $customerId)->get();
+        if(sizeof($reservation) === 0) return redirect('/mypage');
+        $reservation[0]->reservation_datetime = $request->resDate . ' ' . $request->resTime . ':00';
+        $reservation[0]->num_of_seats = $request->num_of_seats;
+        Reservation::where('id', $id)->update([
+            'customer_id' => $customerId,
+            'restaurant_id' => $reservation[0]->restaurant_id,
+            'reservation_datetime' => $reservation[0]->reservation_datetime,
+            'num_of_seats'=> $reservation[0]->num_of_seats
+        ]);
+        return view('done', [
+            'backPage' => '/mypage',
+        ]);
+    }
 }

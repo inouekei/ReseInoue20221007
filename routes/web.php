@@ -5,6 +5,7 @@ use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MyPageController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +23,14 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/detail/{id}', [RestaurantController::class, 'show']);
         Route::post('/reservation/confirm', [ReservationController::class, 'confirm']);
         Route::post('/reservation/create', [ReservationController::class, 'create']);
+        Route::get('/reservation/{id}/edit', [ReservationController::class, 'edit']);
+        Route::post('/reservation/{id}/edit', [ReservationController::class, 'update']);
         Route::post('/reservation/{id}/remove', [ReservationController::class, 'remove']);
         Route::post('/favorite/create', [FavoriteController::class, 'create']);
         Route::post('/favorite/{id}/remove', [FavoriteController::class, 'remove']);
         Route::get('/mypage', [MyPageController::class, 'index']);
+        Route::get('/review/add', [ReviewController::class, 'add']);
+        Route::post('/review/add', [ReviewController::class, 'create']);
 });
 
 

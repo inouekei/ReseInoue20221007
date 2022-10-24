@@ -20,24 +20,35 @@
 }
 </style>
 
-@section('restaurant-img', 'url(' . $restaurant->image_path . ');')
+@section('back-page', $backPage)
 @section('restaurant-name', $restaurant->name)
+@section('restaurant-img', 'url(' . $restaurant->image_path . ');')
 @section('restaurant-tags', '#' . $restaurant->area . '#' . $restaurant->genre)
 @section('restaurant-disc', $restaurant->description)
 
+@if(($formAction === 'confirm') || ($formAction === 'create'))
 @section('form-ttl', '予約')
-@section('back-page', $backPage)
+@elseif(($formAction === 'edit') || ($formAction === 'update'))
+@section('form-ttl', '修正')
+@endif
+
+@if(($formAction === 'confirm') || ($formAction === 'create'))
 @section('form-main-action', '/reservation/' . $formAction)
+@elseif($formAction === 'edit')
+@section('form-main-action', '/reservation/confirm')
+@elseif($formAction === 'update')
+@section('form-main-action', '/reservation/' . $reservation_id . '/edit')
+@endif
 
 @section('content-form-main')
     <input type='hidden' name='redirect' value={{$backPage}}>
     <input class='input-main' type="date" name="resDate"
         value={{$resDate ?? ''}}
-        {{($formAction === 'create') ? 'readonly' : ''}}
+        {{(($formAction === 'create') || ($formAction === 'update')) ? 'readonly' : ''}}
     >
 
     <select class='input-main input-full' name="resTime"
-        {{($formAction === 'create') ? 'disabled' : ''}}
+        {{(($formAction === 'create') || ($formAction === 'update')) ? 'disabled' : ''}}
     >
         @foreach (config('const.AVAILABLE_HOURS') as $hour)
         <option value={{$hour}}
@@ -47,12 +58,9 @@
         </option>
         @endforeach
     </select>
-    @if($formAction === 'create')
-    <input type='hidden' name='resTime' value={{$resTime}}>
-    @endif
 
     <select class='input-main input-full' name="num_of_seats"
-        {{($formAction === 'create') ? 'disabled' : ''}}
+        {{(($formAction === 'create') || ($formAction === 'update')) ? 'disabled' : ''}}
     >
     @foreach (config('const.AVAILABLE_SEATS') as $seats)
         <option value={{$seats}}
@@ -62,8 +70,12 @@
         </option>
         @endforeach
     </select>
-    @if($formAction === 'create')
+    @if(($formAction === 'create') || ($formAction === 'update'))
+    <input type='hidden' name='resTime' value={{$resTime}}>
     <input type='hidden' name='num_of_seats' value={{$num_of_seats}}>
+    @endif
+    @if(($formAction === 'edit') || ($formAction === 'update'))
+    <input type='hidden' name='reservation_id' value={{$reservation_id}}>
     @endif
 
     <input type="hidden" name="restaurant_id" value={{$restaurant->id}}>
@@ -74,12 +86,20 @@
 入力内容を確認する
 @elseif($formAction === 'create')
 予約する
+@elseif($formAction === 'edit')
+入力内容を確認する
+@elseif($formAction === 'update')
+この内容で予約を修正する
 @endif
 @endsection
 
 
+@if(($formAction === 'create') || ($formAction === 'update'))
 @if($formAction === 'create')
 @section('form-confirm-action', '/detail/' . $restaurant->id)
+@elseif($formAction === 'update')
+@section('form-confirm-action', '/reservation/' . $reservation_id . '/edit')
+@endif
 @section('content-form-confirm')
 <input type='hidden' name='redirect' value={{$backPage}}>
 <table class="mode-create">
@@ -109,6 +129,6 @@
         <input type='hidden' name='num_of_seats' value={{$num_of_seats ?? ''}}>
     </tr>
 </table>
-<button submit class='btn-main btn-modify'>修正する</button>
+<button submit class='btn-main btn-modify'>入力内容を修正する</button>
 @endsection
 @endif

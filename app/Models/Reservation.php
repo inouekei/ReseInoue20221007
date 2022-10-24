@@ -74,11 +74,11 @@ class Reservation extends Model
      * 
      * 予約時刻を出力
      * 
-     * @return Carbon::parse($this->reservation_datetime)->format('H:i:s')
+     * @return Carbon::parse($this->reservation_datetime)->format('H:i')
      * 予約時刻を出力
      */
     public function resTime(){
-        return Carbon::parse($this->reservation_datetime)->format('H:i:s');
+        return Carbon::parse($this->reservation_datetime)->format('H:i');
     }
 }
 

@@ -5,7 +5,7 @@
         position: relative;
         width: 300px;
         margin-bottom: 30px;
-        padding: 20px;
+        padding: 10px 20px;
         border-radius: 5px;
         box-shadow: 3px 3px 3px 0 gray; 
         background: darkblue;
@@ -42,6 +42,7 @@
 </style>
 
 @section('customer-name', $customerName)
+@section('message', $message ?? '')
 @section('info-top-ttl', '予約状況')
 @section('info-top')
 @if(sizeof($nextReservations) === 0)
@@ -73,6 +74,9 @@
             <td>{{$reservation->num_of_seats . '人'}}</td>
         </tr>
     </table>
+    <form action={{'/reservation/' . $reservation->id . '/edit'}} method='get'>
+        <button class="btn-main btn-reserve-card">修正する</button>
+    </form>
 </div>
 @endforeach
 @endif
@@ -104,6 +108,10 @@
             <td>{{$reservation->num_of_seats . '人'}}</td>
         </tr>
     </table>
+    <form action='/review/add' method='get'>
+        <input type='hidden' name='reservation_id' value={{$reservation->id}}>
+        <button class="btn-main btn-reserve-card">評価する</button>
+    </form>
 </div>
 @endforeach
 @endif
