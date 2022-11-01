@@ -31,8 +31,14 @@ use Laravel\Sanctum\HasApiTokens;
  * @関数 public function customer()
  * ユーザーに紐づく利用客レコードを出力
  * 
+ * @関数 public function administrator()
+ * ユーザーに紐づく管理者レコードを出力
+ * 
+ * @関数 public function manager()
+ * ユーザーに紐づく管理者レコードを出力
+ * 
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -80,5 +86,37 @@ class User extends Authenticatable
     public function customer(){
         $customer = $this->hasOne('App\Models\Customer')->first();
         return $customer;        
+    }
+
+    /**
+     * administrator()
+     * 
+     * ユーザーに紐づく管理者レコードを出力
+     * 
+     * @var Administrator $administrator
+     * ユーザーに紐づく管理者レコード
+     * 
+     * @return Administrator $administrator
+     * ユーザーに紐づく管理者レコード
+     */
+    public function administrator(){
+        $administrator = $this->hasOne('App\Models\Administrator')->first();
+        return $administrator;        
+    }
+
+    /**
+     * manager()
+     * 
+     * ユーザーに紐づく管理者レコードを出力
+     * 
+     * @var Manager $manager
+     * ユーザーに紐づく管理者レコード
+     * 
+     * @return Manager $manager
+     * ユーザーに紐づく管理者レコード
+     */
+    public function manager(){
+        $manager = $this->hasOne('App\Models\Manager')->first();
+        return $manager;        
     }
 }

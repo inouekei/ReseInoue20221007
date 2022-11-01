@@ -2,6 +2,7 @@
 <style>
     .form-index{
         border-radius: 5px;
+        height: 24px;
         padding: 5px;
         box-shadow: 3px 3px 3px 0 gray; 
         background: white;
@@ -16,6 +17,32 @@
         margin-top: 10px;
         display: flex;
         flex-wrap: wrap;
+    }
+    .btn-index-header{
+        height: 24px;
+        margin: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+    @media screen and (max-width: 768px){
+        .content-main{
+            display: block;
+        }
+        .form-index{
+            position: relative;
+            height: 50px;
+            margin-top: 10px;
+        }
+        .select-index, .input-index{
+            width: 100%;
+            border: none;
+        }
+        .btn-index-header{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
     }
 
 </style>
@@ -47,6 +74,7 @@
             @endforeach
         </select>
         <input class='input-index' name='name' @if($request->name) value = {{$request->name}} @endif placeholder='Search ...'>
+        <button submit class='btn-index-header'><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 @endsection
 @section('content')

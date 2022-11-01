@@ -11,8 +11,16 @@
                 <td><input class='input-auth' name='email' placeholder='Email'></td>
             </tr>
             <tr>
+                <td></td>
+                <td class='td-error'>@error('email')<small>{{$message}}</small>@enderror</td>
+            </tr>
+            <tr>
                 <td><i class="fa-solid fa-lock"></i></td>
                 <td><input class='input-auth' name='password' type='password' placeholder='Password'></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class='td-error'>@error('password')<small>{{$message}}</small>@enderror</td>
             </tr>
             <tr>
                 <td></td>

@@ -32,6 +32,12 @@ use Carbon\Carbon;
  * @関数 public function resTime()
  * 予約時刻を出力
  * 
+ * @関数 public function customer()
+ * 予約したCustomerモデルを出力
+ * 
+ * @関数 public function review()
+ * 予約に紐づくReviewモデルを出力
+ * 
  */
 class Reservation extends Model
 {
@@ -79,6 +85,29 @@ class Reservation extends Model
      */
     public function resTime(){
         return Carbon::parse($this->reservation_datetime)->format('H:i');
+    }
+    /**
+     * customer()
+     * 
+     * 予約したCustomerモデルを出力
+     * 
+     * @return Customer $this->belongsTo('App\Models\Customer');
+     * 予約したCustomerモデルを出力
+     */
+    public function customer(){
+        return $this->belongsTo('App\Models\Customer');
+    }
+
+    /**
+     * review()
+     * 
+     * 予約に紐づくReviewモデルを出力
+     * 
+     * @return Review $this->hasOne('App\Models\Review');
+     * 予約に紐づくReviewモデルを出力
+     */
+    public function review(){
+        return $this->hasOne('App\Models\Review');
     }
 }
 

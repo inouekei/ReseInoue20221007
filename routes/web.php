@@ -19,6 +19,10 @@ use App\Http\Controllers\ReviewController;
 */
 
 Route::middleware(['auth'])->group(function(){
+        Route::get('/mypage', [MyPageController::class, 'index']);
+});
+
+Route::middleware(['auth', 'customer'])->group(function(){
         Route::get('/', [RestaurantController::class, 'index']);
         Route::get('/detail/{id}', [RestaurantController::class, 'show']);
         Route::post('/reservation/confirm', [ReservationController::class, 'confirm']);
@@ -26,12 +30,19 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/reservation/{id}/edit', [ReservationController::class, 'edit']);
         Route::post('/reservation/{id}/edit', [ReservationController::class, 'update']);
         Route::post('/reservation/{id}/remove', [ReservationController::class, 'remove']);
+        Route::get('/reservation/{id}/qr', [ReservationController::class, 'showQr']);
         Route::post('/favorite/create', [FavoriteController::class, 'create']);
         Route::post('/favorite/{id}/remove', [FavoriteController::class, 'remove']);
-        Route::get('/mypage', [MyPageController::class, 'index']);
         Route::get('/review/add', [ReviewController::class, 'add']);
         Route::post('/review/add', [ReviewController::class, 'create']);
 });
 
+Route::middleware(['auth', 'manager'])->group(function(){
+        Route::get('/restaurant/{id}/edit', [RestaurantController::class, 'edit']);
+        Route::post('/restaurant/{id}/update', [RestaurantController::class, 'update']);
+        Route::get('/reservation/{id}/email', [ReservationController::class, 'createEmail']);
+        Route::post('/reservation/{id}/email', [ReservationController::class, 'sendEmail']);
+});
+    
 
 require __DIR__.'/auth.php';

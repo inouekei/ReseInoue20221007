@@ -15,7 +15,14 @@
     .div-right-content{
         width: 100%;
     }
-    
+    @media screen and (max-width: 768px){
+        .content-main{
+            display: block;
+        }
+        .div-right{
+            margin: auto;
+        }
+    }
 </style>
 @section('content')
 <p class='page-ttl'>@yield('customer-name')さん</p>

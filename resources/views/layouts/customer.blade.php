@@ -6,7 +6,7 @@
         <a class='menu-link' href='/'>Home</a>
     </li>
     <li class='menu-item'>
-    <form action='logout' method='post'>
+        <form action='/logout' method='post'>
             @csrf
             <button class='menu-link'>Logout</button>
         </form>

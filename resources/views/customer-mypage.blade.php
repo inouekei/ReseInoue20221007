@@ -39,6 +39,10 @@
         flex-wrap: wrap;
         justify-content: space-between;
     }
+    @media screen and (max-width: 768px){
+        .reserve-card{
+            width: 100%;
+        }
 </style>
 
 @section('customer-name', $customerName)
@@ -74,9 +78,8 @@
             <td>{{$reservation->num_of_seats . '人'}}</td>
         </tr>
     </table>
-    <form action={{'/reservation/' . $reservation->id . '/edit'}} method='get'>
-        <button class="btn-main btn-reserve-card">修正する</button>
-    </form>
+    <a href={{'/reservation/' . $reservation->id . '/edit'}} class="btn-main btn-reserve-card">修正する</a>
+    <a href={{'/reservation/' . $reservation->id . '/qr'}} class="btn-main btn-reserve-card">QR表示</a>
 </div>
 @endforeach
 @endif
@@ -108,10 +111,12 @@
             <td>{{$reservation->num_of_seats . '人'}}</td>
         </tr>
     </table>
+    @if(!$reservation->review)
     <form action='/review/add' method='get'>
         <input type='hidden' name='reservation_id' value={{$reservation->id}}>
         <button class="btn-main btn-reserve-card">評価する</button>
     </form>
+    @endif
 </div>
 @endforeach
 @endif

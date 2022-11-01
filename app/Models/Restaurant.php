@@ -27,7 +27,10 @@ use Illuminate\Support\Facades\Auth;
  * 概要
  * 
  * @関数 public function myFavorite()
- * 利用客の該当店舗におけるお気に入りレコードを出力
+ * ログイン中利用客の該当店舗におけるお気に入りレコードを出力
+ * 
+ * @関数 public function reservations()
+ * 該当店舗に紐づく全予約を出力
  * 
  */
 class Restaurant extends Model
@@ -67,5 +70,28 @@ class Restaurant extends Model
         else return $myFavorite[0];
     }
 
+    /**
+     * reservations()
+     * 
+     * 該当店舗に紐づく全予約を出力
+     * 
+     * @return boolean $myFavorite
+     * お気に入り登録されている場合の該当レコード
+     */
+    public function reservations(){
+        return $this->hasMany('App\Models\Reservation')->get();
+    }
     
+    /**
+     * managers()
+     * 
+     * 該当店舗の店舗代表者すべてを出力
+     * 
+     * @return $this->belongsToMany('App\Models\Manager');
+     * 店舗代表者の管理店舗すべて
+     */
+    public function managers(){
+        return $this->belongsToMany('App\Models\Manager');
+    }
+
 }

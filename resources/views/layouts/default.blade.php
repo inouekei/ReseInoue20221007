@@ -174,6 +174,7 @@
     /* right-form */
     .btn-right-form{
       position: absolute;
+      left: 0;
       bottom: 0;
       width: 100%;
       padding: 10px;
@@ -237,7 +238,15 @@
         color: darkblue;
     }
     /* reserve-card */
+    @media screen and (max-width: 768px){
+      .header-main{
+        display: block;
+      }
 
+      .div-restaurant-card{
+        width: 100%;
+      }
+    }
     </style>
 </head>
 <body>

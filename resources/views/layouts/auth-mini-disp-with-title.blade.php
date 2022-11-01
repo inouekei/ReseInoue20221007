@@ -42,6 +42,13 @@
         display: flex;
         justify-content: flex-end;
     }
+    .td-error{
+        height: 15px;
+        margin: 0;
+        padding: 0 5px;
+        color: red;
+        font-size: 8pt;
+    }
 </style>
 @section('content')
 <div class='disp-wrapper'>

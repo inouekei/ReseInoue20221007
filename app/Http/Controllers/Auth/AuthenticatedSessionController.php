@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\UserLoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,19 +46,30 @@ class AuthenticatedSessionController extends Controller
      * @param  \App\Http\Requests\Auth\LoginRequest  $request
      * ログイン情報
      * 
+     * @var User $user
+     * ユーザーモデル
+     * 
      * @return \Illuminate\Http\RedirectResponse
      * ログイン後リダイレクト情報
      */
-    public function store(LoginRequest $request)
+    public function store(UserLoginRequest $request)
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        if(Auth::user()->customer()){
-            return redirect('/');
+        $user = Auth::user();
+        if ($user->hasVerifiedEmail()){
+            if($user->customer()) return redirect('/');
+            return redirect('/mypage');    
         }else{
-            return redirect('/mypage');
+            Auth::guard('web')->logout();
+
+            $request->session()->invalidate();
+    
+            $request->session()->regenerateToken();
+            
+            return redirect('/verify-email');
         }
     }
 

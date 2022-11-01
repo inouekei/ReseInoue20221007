@@ -18,6 +18,12 @@
 .btn-modify{
     margin: 10px;
 }
+.div-error{
+    display: table-cell;
+    margin: 0 0 20px;
+    height: 10px;
+    color: red;
+}
 </style>
 
 @section('back-page', $backPage)
@@ -46,7 +52,7 @@
         value={{$resDate ?? ''}}
         {{(($formAction === 'create') || ($formAction === 'update')) ? 'readonly' : ''}}
     >
-
+    <div class='div-error'>@error('resDate')<small>{{$message}}</small>@enderror</div>
     <select class='input-main input-full' name="resTime"
         {{(($formAction === 'create') || ($formAction === 'update')) ? 'disabled' : ''}}
     >
@@ -58,6 +64,7 @@
         </option>
         @endforeach
     </select>
+    <div class='div-error'>@error('resTime')<small>{{$message}}</small>@enderror</div>
 
     <select class='input-main input-full' name="num_of_seats"
         {{(($formAction === 'create') || ($formAction === 'update')) ? 'disabled' : ''}}
@@ -70,6 +77,7 @@
         </option>
         @endforeach
     </select>
+    <div class='div-error'>@error('num_of_seats')<small>{{$message}}</small>@enderror</div>
     @if(($formAction === 'create') || ($formAction === 'update'))
     <input type='hidden' name='resTime' value={{$resTime}}>
     <input type='hidden' name='num_of_seats' value={{$num_of_seats}}>

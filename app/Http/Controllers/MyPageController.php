@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Customer;
 use App\Models\Reservation;
 
 /**
@@ -27,8 +26,14 @@ class MyPageController extends Controller
      * @param Request $request
      * メッセージがある場合は格納される
      * 
+     * @var Administrator $administrator
+     * ログイン中の管理者
+     * 
      * @var Customer $customer
      * ログイン中の利用者
+     * 
+     * @var Customer $customer
+     * ログイン中の店舗代表者
      * 
      * @var [Reservation[], Reservation[]] $reservations
      * ログイン中の利用者の予約
@@ -42,17 +47,37 @@ class MyPageController extends Controller
      */
     public function index(Request $request)
     {
-        $customer = Auth::user()->customer();
-        $customerName = Auth::user()->name;
-        $reservations = $customer->reservations();
-        $favorites = $customer->favorites();
+        $administrator = Auth::user()->administrator();
+        if($administrator) return view('admin-mypage');
 
-        return view('customer-mypage', [
-            'customerName' => $customerName,
-            'nextReservations' => $reservations[0],
-            'pastReservations' => $reservations[1],
-            'favorites' => $favorites,
-            'message' => $request->message ?? null,
-        ]);
+        $customer = Auth::user()->customer();
+        if($customer){
+            $customerName = Auth::user()->name;
+            $reservations = $customer->reservations();
+            $favorites = $customer->favorites();
+    
+            return view('customer-mypage', [
+                'customerName' => $customerName,
+                'nextReservations' => $reservations[0],
+                'pastReservations' => $reservations[1],
+                'favorites' => $favorites,
+                'message' => $request->message ?? null,
+            ]);
+        }
+        $manager = Auth::user()->manager();
+        if($manager){
+            $managerName = Auth::user()->name;
+            $restaurants = $manager->restaurants;
+            $reservations = $manager->reservations();
+    
+            return view('manager-mypage', [
+                'managerName' => $managerName,
+                'nextReservations' => $reservations[0],
+                'pastReservations' => $reservations[1],
+                'restaurants' => $restaurants,
+                'message' => $request->message ?? null,
+            ]);
+        }
+
     }
 }

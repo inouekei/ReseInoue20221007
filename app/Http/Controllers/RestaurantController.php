@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Restaurant;
 
 /**
- * Restaurantコントローラークラス
- * 
  * Restaurantモデル一覧参照、、検索、個別参照、作成、更新の処理
  * 
  * @関数 public function index()
@@ -43,9 +42,13 @@ class RestaurantController extends Controller
      * 検索に関してページに表示するメッセージ
      * 
      * @return view('index', [
+     *              一覧ビュー
      *             'restaurants' => $restaurants,
+     *              店舗一覧
      *             'message' => $message,
+     *              検索結果が０のときのメッセージ
      *             'request' => $request,
+     *              保持する検索条件
      *         ]);
      * 表示するRestaurant一覧をindexビューに渡す
      */
@@ -82,7 +85,7 @@ class RestaurantController extends Controller
      * @param Request $request
      * 移動前ページの情報
      * 
-     * @param String $id
+     * @param Integer $id
      * 参照するRestaurantレコードのID
      * 
      * @var Restaurant $redirect
@@ -93,12 +96,19 @@ class RestaurantController extends Controller
      * 表示するRestaurant
      * 
      * @return view('detail', [
+     *              詳細ページ
      *             'restaurant' => $restaurant,
+     *              店舗モデル
      *             'formAction' => 'confirm',
+     *              ページのアクション
      *             'backPage' => $redirect,
+     *              戻り先
      *             'resDate' => $request->resDate ?? null,
+     *              予約日入力内容
      *             'resTime' => $request->resTime ?? null,
+     *              予約時刻入力内容
      *             'num_of_seats' => $request->num_of_seats ?? null,
+     *              予約人数入力内容
      *         ]);
      * 表示するRestaurant一覧をindexビューに渡す
      */
@@ -120,5 +130,72 @@ class RestaurantController extends Controller
             'resTime' => $request->resTime ?? null,
             'num_of_seats' => $request->num_of_seats ?? null,
         ]);
+    }
+    /**
+     * edit()
+     * 
+     * 作成、更新ページ表示
+     * 
+     * @param Integer $id
+     * 参照するRestaurantレコードのID
+     * 0のときは新規作成
+     * 
+     * @var Restaurant $restaurant
+     * 表示するRestaurant
+     * 新規作成時はnull
+     * 
+     * @return view('edit-restaurant', [
+     *              店舗作成・更新ページ
+     *             'restaurant' => $restaurant,
+     *              店舗モデル
+     *         ]);
+     * 表示するRestaurant一覧をindexビューに渡す
+     */
+    public function edit($id)
+    {
+        $restaurant = ($id <> 0 ? Restaurant::find($id) : null);
+        return view('edit-restaurant', [
+                    'restaurant' => $restaurant,
+
+        ]);
+    }
+    /**
+     * update()
+     * 
+     * 作成、更新ページ表示
+     * 
+     * @param Integer $id
+     * 参照するRestaurantレコードのID
+     * 0のときは新規作成
+     * 
+     * @param Request $request
+     * 登録するRestaurant情報
+     * 
+     * @var Restaurant $restaurant
+     * 登録するRestaurantモデル
+     * 
+     * @return view('edit-restaurant', [
+     *              店舗作成・更新ページ
+     *             'restaurant' => $restaurant,
+     *              店舗モデル
+     *         ]);
+     * 表示するRestaurant一覧をindexビューに渡す
+     */
+    public function update(Request $request, $id)
+    {
+        if(!($request->image->isValid())) return;
+        $restaurant = $request->all();
+        $restaurant['image_path'] = str_replace(
+            'public/', '/storage/', $request->image->store('public'));        
+        unset($restaurant['_token']);
+        unset($restaurant['image']);
+        if($id <> 0){
+            Restaurant::find($id)->update($restaurant);
+            return redirect('/mypage');
+        }
+        Restaurant::create($restaurant);
+        $restaurant = Restaurant::latest('id')->first();
+        $restaurant->managers()->attach(Auth::user()->manager()->id);
+        return redirect('/mypage');
     }
 }

@@ -41,7 +41,7 @@
         height: 100%;
         margin: 20px;
         border-radius: 5px;
-        background: blue;
+        background: mediumblue;
         box-shadow: 3px 3px 3px 0 gray; 
     }
     .div-form-content{
@@ -61,7 +61,15 @@
         background: royalblue;
         border-radius: 5px;
     }
-    
+    @media screen and (max-width: 768px){
+        .content-main{
+            display: block;
+        }
+        .form-main{
+            width: 100%;
+            margin: auto;
+        }
+    }
 </style>
 @section('content')
 <div class='content-main'>

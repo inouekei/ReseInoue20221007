@@ -13,7 +13,7 @@ class EmailVerificationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,17 @@ class EmailVerificationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'email' => ['required', 'max:191', 'string', 'email', 'exists:users'],
+        ];
+    }
+
+    public function messages()
+    {
+        return[
+            'required' => config('const.REQUIRED'),
+            'max' => config('const.OVER_MAX'),
+            'string' => config('const.NOT_STRING'),
+            'exists' => config('const.NOT_EXISTS'),
         ];
     }
 }
