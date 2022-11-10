@@ -25,7 +25,7 @@
     }
 </style>
 @section('content')
-<p class='page-ttl'>@yield('customer-name')さん</p>
+<p class='page-ttl'>@yield('page-ttl')</p>
 <span>@yield('message')</span>
 <div class='content-main'>
     <div class='div-half'>

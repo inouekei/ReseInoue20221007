@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Manager;
 
@@ -18,8 +20,8 @@ class ManagerSeeder extends Seeder
         $userLastId = User::all()->last()->id ?? 0; 
         for ($i = $userLastId + 1; $i < $userLastId + 5; $i++){
             $user = [
-                'name' => 'customer' . $i,
-                'email' => 'customer' . $i . '@example.com',
+                'name' => 'manager' . $i,
+                'email' => 'manager' . $i . '@example.com',
                 'password' => Hash::make('password'),
             ];
             User::create($user);
@@ -28,7 +30,7 @@ class ManagerSeeder extends Seeder
             $manager = [
                 'user_id' => $user_id,
             ];
-            manager::create($customer);
+            Manager::create($manager);
         }
     }
 }

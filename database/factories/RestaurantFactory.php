@@ -20,11 +20,11 @@ class RestaurantFactory extends Factory
      */
     public function definition()
     {
-        $genreId = $this->faker->numberBetween(0, 4)
+        $genreId = $this->faker->numberBetween(0, 4);
 
         return [
             'name' => $this->faker->word,
-            'image_path' => config('const.DUMMY_IMAGES_PATH') . config('const.DUMMY_IMAGE_NAMES')[$genreId] . '.jpg',
+            'image_path' => config('const.DUMMY_IMAGES_PATH') . config('const.GENRE_IMAGE_NAMES')[$genreId] . '.jpg',
             'area' => $this->faker->randomElement(config('const.AREAS')),
             'genre' => config('const.GENRES')[$genreId],
             'description' => $this->faker->realText($this->faker->numberBetween(20, 30)),

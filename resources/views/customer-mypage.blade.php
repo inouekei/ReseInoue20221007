@@ -45,7 +45,7 @@
         }
 </style>
 
-@section('customer-name', $customerName)
+@section('page-ttl', $customerName . 'さん')
 @section('message', $message ?? '')
 @section('info-top-ttl', '予約状況')
 @section('info-top')
@@ -80,6 +80,7 @@
     </table>
     <a href={{'/reservation/' . $reservation->id . '/edit'}} class="btn-main btn-reserve-card">修正する</a>
     <a href={{'/reservation/' . $reservation->id . '/qr'}} class="btn-main btn-reserve-card">QR表示</a>
+    <a href={{'/reservation/' . $reservation->id . '/pay'}} class="btn-main btn-reserve-card">お支払い</a>
 </div>
 @endforeach
 @endif

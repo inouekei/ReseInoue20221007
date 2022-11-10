@@ -13,8 +13,15 @@ class ReservationFactory extends Factory
      */
     public function definition()
     {
+        $firstCustomerId = Customer::first()->id;
+        $lastCustomerId = Customer::all()->last()->id;
+        $firstRestaurantId = Restaurant::first()->id;
+        $lastRestaurantId = Restaurant::all()->last()->id;
+        $customer_id = Customer::find(rand($firstCustomerId, $lastCustomerId));
+        $restaurant_id = Restaurant::find(rand($firstRestaurantId, $lastRestaurantId));
         return [
-            //
+            'customer_id' => $reservation_id,
+            'restaurant_id' => $restaurant_id,
         ];
     }
 }

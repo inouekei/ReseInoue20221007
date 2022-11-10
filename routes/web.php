@@ -6,6 +6,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ Route::middleware(['auth', 'customer'])->group(function(){
         Route::post('/reservation/{id}/edit', [ReservationController::class, 'update']);
         Route::post('/reservation/{id}/remove', [ReservationController::class, 'remove']);
         Route::get('/reservation/{id}/qr', [ReservationController::class, 'showQr']);
+        Route::get('/reservation/{id}/pay', [PaymentController::class, 'add']);
+        Route::post('/reservation/{id}/pay', [PaymentController::class, 'pay']);
         Route::post('/favorite/create', [FavoriteController::class, 'create']);
         Route::post('/favorite/{id}/remove', [FavoriteController::class, 'remove']);
         Route::get('/review/add', [ReviewController::class, 'add']);

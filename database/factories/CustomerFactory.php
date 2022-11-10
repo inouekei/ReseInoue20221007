@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 class CustomerFactory extends Factory
 {
@@ -13,8 +14,9 @@ class CustomerFactory extends Factory
      */
     public function definition()
     {
+        $id = User::all()->last()->id;
         return [
-            //
+            'user_id' => $id,
         ];
     }
 }
