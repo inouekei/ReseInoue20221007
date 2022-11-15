@@ -39,6 +39,12 @@ use App\Http\Requests\ReservationRequest;
  *
  * @関数 public function showQr()
  * QRコード表示処理
+ *
+ * @関数 public function readQr()
+ * QRコード読取ページ表示
+ *
+ * @関数 public function search()
+ * QRコードによる予約情報照会処理
  */
 class ReservationController extends Controller
 {
@@ -308,5 +314,17 @@ class ReservationController extends Controller
         return view('show-qr', [
             'reservation' => $reservation,
         ]);
+    }
+
+    /**
+     * readQr()
+     * 
+     * QRコード読取ページ表示
+     * 
+     * @return view('read-qr');
+     */
+    public function readQr()
+    {
+        return view('read-qr');
     }
 }

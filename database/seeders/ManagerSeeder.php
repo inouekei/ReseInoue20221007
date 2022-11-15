@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Manager;
+use Carbon\Carbon;
 
 class ManagerSeeder extends Seeder
 {
@@ -23,6 +24,7 @@ class ManagerSeeder extends Seeder
                 'name' => 'manager' . $i,
                 'email' => 'manager' . $i . '@example.com',
                 'password' => Hash::make('password'),
+                'email_verified_at' => Carbon::now(),
             ];
             User::create($user);
             $user_id = User::where('email', '=', $user['email'])->get()[0]->id;

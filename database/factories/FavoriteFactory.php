@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Customer;
 use App\Models\Restaurant;
-use Carbon\Carbon;
+use App\Models\Favorite;
 
-class ReservationFactory extends Factory
+class FavoriteFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,13 +20,16 @@ class ReservationFactory extends Factory
         $lastCustomerId = Customer::all()->last()->id;
         $firstRestaurantId = Restaurant::first()->id;
         $lastRestaurantId = Restaurant::all()->last()->id;
-        $customer_id = rand($firstCustomerId, $lastCustomerId);
-        $restaurant_id = rand($firstRestaurantId, $lastRestaurantId);
+        do {
+            $customer_id = rand($firstCustomerId, $lastCustomerId);
+            $restaurant_id = rand($firstRestaurantId, $lastRestaurantId);
+        } while (Favorite::where('customer_id', $customer_id)
+        ->where('restaurant_id', $restaurant_id)
+        ->get()->count());
+
         return [
             'customer_id' => $customer_id,
             'restaurant_id' => $restaurant_id,
-            'reservation_datetime' => Carbon::now(),
-            'num_of_seats' => rand(1, 255),
         ];
     }
 }

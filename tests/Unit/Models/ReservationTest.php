@@ -7,6 +7,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Reservation;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Customer;
+use App\Models\Restaurant;
 
 class ReservationTest extends TestCase
 {
@@ -61,12 +64,12 @@ class ReservationTest extends TestCase
         $lastCustomerId = Customer::all()->last()->id;
         $firstRestaurantId = Restaurant::first()->id;
         $lastRestaurantId = Restaurant::all()->last()->id;
-        $customer_id = Customer::find(rand($firstCustomerId, $lastCustomerId));
-        $restaurant_id = Restaurant::find(rand($firstRestaurantId, $lastRestaurantId));
+        $customer_id = rand($firstCustomerId, $lastCustomerId);
+        $restaurant_id = rand($firstRestaurantId, $lastRestaurantId);
 
         $validData = [
             'customer_id' => $customer_id,
-            'restaurant_id' => $restaurant_id
+            'restaurant_id' => $restaurant_id,
             'reservation_datetime' => Carbon::now(),
             'num_of_seats' => 5,
         ];
@@ -88,6 +91,21 @@ class ReservationTest extends TestCase
         ]));
         array_push($datas, array_replace($validData, [
             'reservation_datetime' => 'abc',
+        ]));
+        array_push($datas, array_replace($validData, [
+            'num_of_seats' => null,
+        ]));
+        array_push($datas, array_replace($validData, [
+            'num_of_seats' => 'abc',
+        ]));
+        array_push($datas, array_replace($validData, [
+            'num_of_seats' => -1,
+        ]));
+        array_push($datas, array_replace($validData, [
+            'num_of_seats' => 2.5,
+        ]));
+        array_push($datas, array_replace($validData, [
+            'num_of_seats' => 256,
         ]));
         
         $reservation = new Reservation();

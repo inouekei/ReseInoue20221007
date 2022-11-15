@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Customer;
+use Carbon\Carbon;
 
 class CustomerSeeder extends Seeder
 {
@@ -23,6 +24,7 @@ class CustomerSeeder extends Seeder
                 'name' => 'customer' . $i,
                 'email' => 'customer' . $i . '@example.com',
                 'password' => Hash::make('password'),
+                'email_verified_at' => Carbon::now(),
             ];
             User::create($user);
             $user_id = User::where('email', '=', $user['email'])->get()[0]->id;
