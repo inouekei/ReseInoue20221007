@@ -72,8 +72,8 @@
         color: white;
     }
 </style>
-<script src="{{ asset('js/jsQR.js') }}"></script>
-<script src="{{ asset('js/main.js') }}"></script>
+<script src="{{ secure_asset('js/jsQR.js') }}"></script>
+<script src="{{ secure_asset('js/main.js') }}"></script>
 @section('page-title', 'QR読取')
 @section('info-top-ttl', 'お客様情報')
 @section('info-top')
