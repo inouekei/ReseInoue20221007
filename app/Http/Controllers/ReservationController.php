@@ -242,7 +242,7 @@ class ReservationController extends Controller
      * 
      * @return view('email', [
      *              メール作成ページ
-     *             'reservation_id' => $id,
+     *             'reservation' => $reservation,
      *              メールの送信先利用者に紐づくReservationモデル
      *         ]);
      */
@@ -273,7 +273,8 @@ class ReservationController extends Controller
      * @var Array $data
      * Mailableに渡すデータ
      * 
-     * @return redirect('/mypage');
+     * @return redirect('/mypage')->with('message', 'メールが送信されました');
+     * マイページにメッセージ付きでリダイレクト
      */
     public function sendEmail(Request $request, $id)
     {

@@ -174,12 +174,7 @@ class RestaurantController extends Controller
      * @var Restaurant $restaurant
      * 登録するRestaurantモデル
      * 
-     * @return view('edit-restaurant', [
-     *              店舗作成・更新ページ
-     *             'restaurant' => $restaurant,
-     *              店舗モデル
-     *         ]);
-     * 表示するRestaurant一覧をindexビューに渡す
+     * @return redirect('/mypage');
      */
     public function update(Request $request, $id)
     {

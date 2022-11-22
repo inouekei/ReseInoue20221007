@@ -39,11 +39,14 @@ class PaymentController extends Controller
      * @var Reservation $reservation
      * メールの送信先利用者に紐づくReservationモデル
      * 
-     * @return view('pay', [
-     *              メール作成ページ
-     *             'reservation' => $reservation,
-     *              メールの送信先利用者に紐づくReservationモデル
-     *         ]);
+     * @var User $user
+     * メールの送信先利用者のUserモデル
+     * 
+     * @var Array $data
+     * Mailableに渡すデータ
+     * 
+     * @return redirect('/mypage')->with('message', 'メールが送信されました');
+     * マイページにメッセージ付きでリダイレクト
      */
     public function sendLink(Request $request, $id)
     {
@@ -72,18 +75,21 @@ class PaymentController extends Controller
      * 支払に紐づくReservationモデルのID
      * 
      * @var Reservation $reservation
-     * メールの送信先利用者に紐づくReservationモデル
+     * 支払に紐づくReservationモデル
+     * 
+     * @return redirect('/mypage');
+     * ログイン中利用者に紐づかない予約の場合は、マイページにリダイレクト
      * 
      * @return view('pay', [
-     *              メール作成ページ
+     *              支払ページ
      *             'reservation' => $reservation,
-     *              メールの送信先利用者に紐づくReservationモデル
+     *              支払に紐づくReservationモデル
      *         ]);
      */
     public function add(Request $request, $id)
     {
         $reservation = Reservation::find($id);
-        if (!(Auth::user()->customer()->id === $reservation->customer->id)) return;
+        if (!(Auth::user()->customer()->id === $reservation->customer->id)) return redirect('/mypage');
         return view('pay', [
             'reservation' => $reservation,
             'amount' => $request->amount,
@@ -102,19 +108,21 @@ class PaymentController extends Controller
      * 支払に紐づくReservationモデルのID
      * 
      * @var Reservation $reservation
-     * メールの送信先利用者に紐づくReservationモデル
+     * 支払に紐づくReservationモデル
      * 
-     * @return view('pay', [
-     *              メール作成ページ
-     *             'reservation' => $reservation,
-     *              メールの送信先利用者に紐づくReservationモデル
-     *         ]);
+     * @var Customer $customer
+     * Stripeの顧客モデル
+     * 
+     * @var Charge $charge
+     * Stripeの支払モデル
+     * 
+     * @return view('paid');
+     *              支払完了ページ
      */
     public function pay(Request $request, $id)
     {
         $reservation = Reservation::find($id);
         if (!(Auth::user()->customer()->id === $reservation->customer->id)) return;
-        // if (Auth::user()->customer()->isPaid) return;
 
         try
         {
