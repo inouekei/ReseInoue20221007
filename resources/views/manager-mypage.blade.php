@@ -60,10 +60,6 @@
 @else
 @foreach($nextReservations as $reservation)
 <div class="reserve-card">
-    <form action={{'/reservation/' . $reservation->id . '/remove'}} method='post'>
-        @csrf
-        <button class="btn-cancel" submit>×</button>
-    </form>
     <i class="fa-solid fa-clock"></i>
     <span>{{'予約' . $reservation->numbering}}</span>
     <table class='tbl-reserve'>

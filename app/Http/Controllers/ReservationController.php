@@ -40,11 +40,8 @@ use App\Http\Requests\ReservationRequest;
  * @関数 public function showQr()
  * QRコード表示処理
  *
- * @関数 public function readQr()
- * QRコード読取ページ表示
- *
- * @関数 public function search()
- * QRコードによる予約情報照会処理
+ * @関数 public function show()
+ * QRコード読取ページ、参照ページ表示
  */
 class ReservationController extends Controller
 {
@@ -317,14 +314,29 @@ class ReservationController extends Controller
     }
 
     /**
-     * readQr()
+     * show()
+     * QRコード読取ページ、参照ページ表示
      * 
-     * QRコード読取ページ表示
+     * @param Request $request
+     * 入力内容
      * 
-     * @return view('read-qr');
+     * @param Integer $id
+     * 更新するReservationレコードのID
+     * 
+     * @var Reservation $reservation
+     * 表示QRコードに紐づくReservationモデル
+     * 
+     * @return view('read-qr', ['reservation' => null]);
+     * idが0もしくは該当する予約がないとき
+     * @return view('read-qr', ['reservation' => $reservation]);
+     * 該当する予約があったとき
      */
-    public function readQr()
+    public function show(Request $request, $id)
     {
-        return view('read-qr');
+        if ($id === "0") return view('read-qr', ['reservation' => null]);
+        $reservation = Reservation::find($id);
+        if ($reservation->restaurant->managers->find(Auth::user()->manager())){
+            return view('read-qr', ['reservation' => $reservation]);
+        }
     }
 }

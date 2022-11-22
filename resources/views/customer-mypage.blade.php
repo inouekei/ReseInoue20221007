@@ -80,7 +80,7 @@
     </table>
     <a href={{'/reservation/' . $reservation->id . '/edit'}} class="btn-main btn-reserve-card">修正する</a>
     <a href={{'/reservation/' . $reservation->id . '/qr'}} class="btn-main btn-reserve-card">QR表示</a>
-    <a href={{'/reservation/' . $reservation->id . '/pay'}} class="btn-main btn-reserve-card">お支払い</a>
+    /* <a href={{'/reservation/' . $reservation->id . '/pay'}} class="btn-main btn-reserve-card">お支払い</a> */
 </div>
 @endforeach
 @endif

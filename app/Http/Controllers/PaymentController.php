@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MailMain;
 use App\Models\Reservation;
 use Stripe\Stripe;
 use Stripe\Customer;
@@ -23,6 +25,41 @@ use Stripe\Charge;
  */
 class PaymentController extends Controller
 {
+    /**
+     * sendLink()
+     * 
+     * 支払リンク送信処理
+     * 
+     * @param Request $request
+     * 入力内容
+     * 
+     * @param Integer $id
+     * 支払に紐づくReservationモデルのID
+     * 
+     * @var Reservation $reservation
+     * メールの送信先利用者に紐づくReservationモデル
+     * 
+     * @return view('pay', [
+     *              メール作成ページ
+     *             'reservation' => $reservation,
+     *              メールの送信先利用者に紐づくReservationモデル
+     *         ]);
+     */
+    public function sendLink(Request $request, $id)
+    {
+        $reservation = Reservation::find($id);
+        $user = $reservation->customer->user;
+        $data = [
+            'from' => $reservation->restaurant->name . '　代表スタッフ',
+            'subject' => $request->subject,
+            'message' => 'ご利用ありがとうございます。こちらのリンクより' . $request->amount . '円をお支払いください。'
+                . "https://reseinoue.herokuapp.com/reservation/" . $id . '/pay?amount=' . $request->amount
+        ];
+    	Mail::to($user->email, $user->name . '様')
+                ->send(new MailMain($data));
+    	return redirect('/mypage')->with('message', 'メールが送信されました');
+    }
+
     /**
      * add()
      * 

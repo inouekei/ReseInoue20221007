@@ -69,5 +69,5 @@
 @endsection
 @section('div-right-ttl', 'QRコード')
 @section('div-right-content')
-{{QrCode::size(300)->generate('[ "reservation_id" => ' . $reservation->id . ']');}}
+{{QrCode::size(300)->generate($reservation->id);}}
 @endsection
