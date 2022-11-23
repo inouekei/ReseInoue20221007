@@ -63,3 +63,8 @@ https://docs.google.com/spreadsheets/d/157cN3AXf7SD8C2pZxYj32Xj7_fsYsCHjwCs3p3p4
 - （利用者権限）customer1@example.com、customer2@example.com、customer3@example.com、customer4@example.com、customer5@example.com、PWはすべて"password"
 - （店舗代表者権限）manager6@example.com、manager7@example.com、manager8@example.com、manager9@example.com、manager10@example.com、PWはすべて"password"
 - （管理者権限）admin@example.com、PWは"password"
+
+## デプロイ済み環境（2022/11/27まで）
+https://reseinoue.herokuapp.com
+（上記アカウントをシーディング済み）
+
