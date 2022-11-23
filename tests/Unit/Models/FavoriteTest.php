@@ -83,7 +83,7 @@ class FavoriteTest extends TestCase
         foreach ($datas as $data) {
                 try{
                 $favorite->fill($data)->save();
-            }catch(\Exception $e){
+            } catch (\Exception $e) {
             }
             $this->assertDatabaseMissing('favorites',$data);
         }

@@ -45,7 +45,8 @@ Route::middleware(['auth', 'manager'])->group(function(){
         Route::post('/restaurant/{id}/update', [RestaurantController::class, 'update']);
         Route::get('/reservation/{id}/email', [ReservationController::class, 'createEmail']);
         Route::post('/reservation/{id}/email', [ReservationController::class, 'sendEmail']);
-        Route::get('/reservation/{id}/qr', [ReservationController::class, 'showQr']);
+        Route::get('/reservation/{id}/show', [ReservationController::class, 'show']);
+        Route::get('/reservation/{id}/send', [PaymentController::class, 'sendLink']);
 });
     
 

@@ -19,6 +19,7 @@ class CreateFavoritesTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->bigInteger('restaurant_id')->unsigned();
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
+            $table->unique(['customer_id', 'restaurant_id']);
             $table->datetime('created_at')->useCurrent()->nullable();
             $table->datetime('updated_at')->useCurrent()->nullable();
         });

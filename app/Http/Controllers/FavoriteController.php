@@ -9,8 +9,6 @@ use App\Models\Customer;
 use App\Models\Favorite;
 
 /**
- * Favoriteコントローラークラス
- * 
  * 利用者に紐づくFavoriteモデルの作成、削除の処理
  * 
  * @関数 public function create()
@@ -38,12 +36,12 @@ class FavoriteController extends Controller
      * @var Array $favorites
      * テーブルに代入する値がすでに登録されている場合の該当レコード
      * 
-     * @var Restaurant $redirect
+     * @var String $redirect
      * 戻り先のページリンク
      * 店舗一覧から移動した場合は検索状況も保持する
      * 
      * @return redirect($redirect);
-     * 
+     * ページリダイレクト
      */
     public function create(Request $request)
     {
@@ -91,8 +89,9 @@ class FavoriteController extends Controller
      * 店舗一覧から移動した場合は検索状況も保持する
      * 
      * @return redirect($request->redirect);
+     * 削除対象がなかった場合のページリダイレクト
      * @return redirect($redirect);
-     * 
+     * 削除処理後のページリダイレクト
      */
     public function remove(Request $request, $id)
     {
